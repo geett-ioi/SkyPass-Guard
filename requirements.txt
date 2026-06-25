@@ -1,0 +1,5 @@
+# SkyPass Guard - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+Flask==3.0.0                    # Web framework
+cryptography==41.0.7            # Encryption/decryption (Fernet)

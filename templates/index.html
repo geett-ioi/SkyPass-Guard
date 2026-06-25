@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyPass Guard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="nav-icon"></span>
+                <span class="nav-text">SkyPass Guard</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <button class="nav-btn active" data-section="checker">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Password Checker</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" data-section="generator">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Generator</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" data-section="crypto">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Encrypt/Decrypt</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" data-section="history">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">History & Export</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            
+            <!-- SECTION 1: PASSWORD CHECKER -->
+            <div class="section active" id="checker">
+                <div class="section-card">
+                    <h2 class="section-title">Check Password Strength</h2>
+                    <p class="section-subtitle">Enter a password to analyze its security</p>
+                    
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="passwordInput" 
+                            class="password-input" 
+                            placeholder="Enter your password here..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <!-- Animated Circular Score Ring -->
+                    <div class="score-ring-container">
+                        <div class="score-ring">
+                            <svg class="score-svg" viewBox="0 0 120 120">
+                                <circle class="ring-background" cx="60" cy="60" r="50"></circle>
+                                <circle class="ring-progress" cx="60" cy="60" r="50" stroke-dasharray="0 314"></circle>
+                            </svg>
+                            <div class="score-number" id="scoreNumber">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="strength-label" id="strengthLabel">Enter Password</div>
+                    
+                    <!-- Animated Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="issues-section" id="issuesSection" style="display: none;">
+                        <h3 class="section-title-small">Issues Detected:</h3>
+                        <ul class="issues-list" id="issuesList"></ul>
+                    </div>
+                    
+                    <div class="suggestions-section" id="suggestionsSection" style="display: none;">
+                        <h3 class="section-title-small">How to Improve:</h3>
+                        <ul class="suggestions-list" id="suggestionsList"></ul>
+                    </div>
+                    
+                    <div class="info-section" id="infoSection" style="display: none;">
+                        <p class="info-text">
+                            <strong>Entropy:</strong> <span id="entropyValue">0</span> bits<br>
+                            <strong>Time to Crack:</strong> <span id="crackTimeValue">Instantly</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 2: PASSWORD GENERATOR -->
+            <div class="section" id="generator">
+                <div class="section-card">
+                    <h2 class="section-title">Generate Secure Password</h2>
+                    <p class="section-subtitle">Create cryptographically strong passwords</p>
+                    
+                    <div class="option-group">
+                        <label for="lengthSelect" class="option-label">Password Length:</label>
+                        <select id="lengthSelect" class="option-select">
+                            <option value="8">8 characters</option>
+                            <option value="10">10 characters</option>
+                            <option value="12" selected>12 characters</option>
+                            <option value="14">14 characters</option>
+                            <option value="16">16 characters</option>
+                            <option value="20">20 characters</option>
+                            <option value="24">24 characters</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="symbolsCheck" checked>
+                            <span>Include Symbols (!@#$%^&*)</span>
+                        </label>
+                    </div>
+                    
+                    <button id="generateBtn" class="generate-btn">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Generate Password</span>
+                    </button>
+                    
+                    <div class="generated-password-container" id="generatedContainer" style="display: none;">
+                        <input 
+                            type="text" 
+                            id="generatedPassword" 
+                            class="generated-password" 
+                            readonly
+                        >
+                        <button id="copyBtn" class="copy-btn">
+                            <span class="btn-icon"></span>
+                            <span class="btn-text">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: ENCRYPTION/DECRYPTION -->
+            <div class="section" id="crypto">
+                <div class="section-card">
+                    <h2 class="section-title">Encrypt / Decrypt Password</h2>
+                    <p class="section-subtitle">Learn symmetric encryption with Fernet</p>
+                    
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="cryptoInput" 
+                            class="crypto-input" 
+                            placeholder="Enter password to encrypt or decrypt..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <div class="crypto-buttons">
+                        <button id="encryptBtn" class="crypto-btn encrypt">
+                            <span class="btn-icon"></span>
+                            <span class="btn-text">Encrypt</span>
+                        </button>
+                        <button id="decryptBtn" class="crypto-btn decrypt">
+                            <span class="btn-icon"></span>
+                            <span class="btn-text">Decrypt</span>
+                        </button>
+                    </div>
+                    
+                    <div class="crypto-result-container" id="cryptoResultContainer" style="display: none;">
+                        <label class="result-label">Result:</label>
+                        <input 
+                            type="text" 
+                            id="cryptoResult" 
+                            class="crypto-result" 
+                            readonly
+                        >
+                        <button id="copyCryptoBtn" class="copy-btn">
+                            <span class="btn-icon"></span>
+                            <span class="btn-text">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 4: HISTORY & EXPORT -->
+            <div class="section" id="history">
+                <div class="section-card">
+                    <h2 class="section-title"> Password Check History</h2>
+                    <p class="section-subtitle">View and export all your password checks</p>
+                    
+                    <button id="exportBtn" class="export-btn">
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Export to CSV</span>
+                    </button>
+                    
+                    <div class="table-container">
+                        <table id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Score</th>
+                                    <th>Strength</th>
+                                    <th>Issues</th>
+                                    <th>Suggestions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Table rows will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="noHistoryMessage" class="no-history">
+                        <p>No password checks yet. Start checking passwords above!</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>SkyPass Guard — Secure Password Analyzer & Generator</p>
+            <p class="footer-note">All password checks are saved locally for your learning. Never store real passwords in plain text!</p>
+        </footer>
+        
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
