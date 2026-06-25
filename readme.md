@@ -1,4 +1,4 @@
-# 🔐 SkyPass Guard — Secure Password Analyzer & Generator
+# SkyPass Guard — Secure Password Analyzer & Generator
 
 I built **SkyPass Guard** 
 It's a web dashboard that checks password strength, generates secure passwords, and lets you encrypt/decrypt test passwords for learning.
@@ -17,7 +17,7 @@ I wanted to make something that actually helps people understand **why** passwor
 - **Export to CSV** — Download your history for reports
 - **Clean sky-blue design** — Makes it look like a real product, not just a school demo
 
-## Tech Stack 🛠️
+## Tech Stack 
 
 - **Frontend:** HTML, CSS, JavaScript
 - **Backend:** Python Flask
